@@ -1,0 +1,54 @@
+.header {
+    width: 100vw;
+    height: 100px;
+    background-color: rgb(104, 101, 101);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header__title {
+    color: rgb(255, 255, 255);
+    font-size: xx-large
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;  
+}
+
+.main__card {
+    height: 500px;
+    width: 300px;
+    margin: 10px 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px black dotted;
+}
+
+.main__buttons {
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0 10px;
+}
+
+.main__button--known {
+    height: 50px;
+    width: 150px;
+    border: none;
+    border-radius: 15px;
+    background-color: rgb(83, 182, 108);
+}
+
+.main__button--learn {
+    height: 50px;
+    width: 150px;
+    border: none;
+    border-radius: 15px;
+    background-color: rgb(233, 105, 105);
+}
