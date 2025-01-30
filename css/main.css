@@ -1,12 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Russo+One&display=swap');
 
 .russo-one-regular {
     font-family: "Russo One", serif;
     font-weight: 800;
     font-size: xx-large;
     font-style: normal;
-  }
-  
+}
+
+.montserrat {
+    font-family: "Montserrat", serif;
+    font-weight: 600;
+    font-size: xx-large;
+    font-style: normal;
+}
+
 
 .header {
     width: 100vw;
@@ -34,10 +41,18 @@
     width: 300px;
     margin: 10px 30px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     border: 2px black dotted;
-    font-family: open;
+}
+
+.card__image {
+
+}
+
+.card__word {
+    margin: auto;
 }
 
 .main__buttons {
