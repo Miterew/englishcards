@@ -68,7 +68,7 @@ function getNewCard() {
     cardImage.textContent = '';
 
     let image = document.createElement('img');
-    image.src = '/img/' + keys[counter] + '.png';
+    image.src = 'img/' + keys[counter] + '.png';
     cardImage.appendChild(image);
 
     setNextIndex(keys, counter);
