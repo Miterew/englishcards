@@ -89,10 +89,14 @@
     background-color: rgb(233, 105, 105);
 }
 
+.links:first {
+    margin-top: 50px;
+}
+
 .links {
     display: flex;
     justify-content: center;
-    margin-top: 50px;
+    margin-top: 20px;
     font-family: "Montserrat", serif;
     font-weight: 600;
     font-size: small;
