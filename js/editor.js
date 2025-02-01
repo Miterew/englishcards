@@ -1,10 +1,14 @@
 // От editor.html
 const editorMain = document.querySelector('.editor__main');
 
+const switchLearned = document.getElementById('learnedWordsSwitch');
+const switchNeedLearn = document.getElementById('wordsSwitchNeedLearn');
 
 setTable();
 
 function setTable() {
+
+    loadWords();
 
     const table = document.createElement('table');
     editorMain.appendChild(table);
@@ -114,6 +118,8 @@ function editWord(table) {
 
                         words[newSavedWord] = newSavedWordTranslate; // Добавляем в объект слов
 
+                        localStorage.setItem('words', JSON.stringify(words));
+
                         setTimeout(() => {
                             table.remove();
                             setTable(); // Создаём новую таблицу уже с обновленными словами
@@ -130,3 +136,21 @@ function editWord(table) {
 
 
 }
+
+
+switchLearned.addEventListener('change', function() {
+    if(this.checked) {
+        console.log('Включили')
+    } else {
+        console.log('Выключили')
+    }
+})
+
+
+switchNeedLearn.addEventListener('change', function() {
+    if(this.checked) {
+        console.log('Включили')
+    } else {
+        console.log('Выключили')
+    }
+})

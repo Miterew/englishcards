@@ -5,18 +5,30 @@ const btnKnow = document.querySelector('.main__button--known');
 const btnNo = document.querySelector('.main__button--learn');
 
 
+// Проверяем первый ли запуск для загрузки сохраненных слов
+function loadWords() {
+    let str = localStorage.getItem('words'); // Пытаемся получить данные из хранилища
 
+    if (str) {
+        return JSON.parse(str);
+    } else {
+        console.log('Сохраненных слов нет, создаём новый список');
 
-// Объект с полным списком слов
-const words = {
-    adult: "взрослый",
-    age: "возраст",
-    baby: "малыш",
-    birth: "рождение",
-    boy: "мальчик",
+        const defaultWords = {
+            adult: "взрослый",
+            age: "возраст",
+            baby: "малыш",
+            birth: "рождение",
+            boy: "мальчик",
+            test: "test"
+        };
 
-    test: 'test',
-};
+        localStorage.setItem('words', JSON.stringify(defaultWords));
+        return defaultWords;
+    }
+}
+
+let words = loadWords();
 
 // Объект и известными словами
 const know = {};
@@ -64,7 +76,7 @@ function getNewCard() {
 
     let key = keys[counter];
     cardWord.textContent = key;
-    
+
     cardImage.textContent = '';
 
     let image = document.createElement('img');
@@ -77,14 +89,14 @@ function getNewCard() {
     console.log(know)
 }
 
-function setNextIndex (arrKeys, index) {
+function setNextIndex(arrKeys, index) {
     if (index === arrKeys.length) {
         alert("Мы прошли все слова, начнем с начала =)");
-        
+
         counter = 0;
         return getNewCard()
     } else {
-        console.log(index + 1 + " | " + arrKeys.length );
+        console.log(index + 1 + " | " + arrKeys.length);
         counter++;
     }
 

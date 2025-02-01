@@ -26,7 +26,9 @@
 
 .header__title {
     color: rgb(255, 255, 255);
-    font-size: xx-large
+    font-family: "Russo One", serif;
+    font-size: xx-large;
+
 }
 
 .main {
@@ -64,6 +66,10 @@
 }
 
 .main__button--known {
+    font-family: "Montserrat", serif;
+    font-weight: 600;
+    font-size: medium;
+
     height: 50px;
     width: 150px;
     border: none;
@@ -72,9 +78,23 @@
 }
 
 .main__button--learn {
+    font-family: "Montserrat", serif;
+    font-weight: 600;
+    font-size: small;
+    
     height: 50px;
     width: 150px;
     border: none;
     border-radius: 15px;
     background-color: rgb(233, 105, 105);
+}
+
+.links {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    font-family: "Montserrat", serif;
+    font-weight: 600;
+    font-size: small;
+    font-style: normal;
 }

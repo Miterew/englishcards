@@ -20,13 +20,36 @@
         </div>
 
 
-        <div class="editor__main">
+        <div class="editor__main"></div>
 
+
+        <div class="editor__show_words">
+            <!-- Переключатель 1 - Изученные слова -->
+            <label class="switch-label">
+                Показать изученные слова
+                <label class="switch">
+                    <input type="checkbox" id="learnedWordsSwitch">
+                    <span class="slider round"></span>
+                </label>
+            </label>
+
+
+            <!-- Переключатель 2 - НЕизученные слова -->
+            <label class="switch-label">
+                Показать НЕизученные слова
+                <label class="switch">
+                    <input type="checkbox" id="wordsSwitchNeedLearn">
+                    <span class="slider round"></span>
+                </label>
+            </label>
 
         </div>
+
+        <div class="links"><a href="/">Перейти на главную страницу</a></div>
+
     </div>
-    <script src="js/main.js"></script>
-    <script src="js/editor.js"></script>
+    <script src="js/main.js" defer></script>
+    <script src="js/editor.js" defer></script>
 </body>
 
 </html>
