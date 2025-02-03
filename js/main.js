@@ -49,8 +49,10 @@ if (btnKnow) {
         let currentValue = words[key];
 
         know[key] = currentValue;
+        localStorage.setItem('know', JSON.stringify(know));
 
         delete words[key];
+        localStorage.setItem('words', JSON.stringify(words));
 
         counter--;
         getNewCard()

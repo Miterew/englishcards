@@ -1,11 +1,12 @@
 // От editor.html
-const editorMain = document.querySelector('.editor__main');
+const pageTable = document.querySelector('.page__table');
 
 const switchLearned = document.getElementById('learnedWordsSwitch');
 const switchNeedLearn = document.getElementById('wordsSwitchNeedLearn');
 const clearButton = document.getElementById('clear');
 const divAddButton = document.querySelector('.editor__add_word');
 const addWordButton = document.getElementById('add_word');
+const wordLearnedList = document.querySelector('.words__show_list');
 
 setTable();
 
@@ -14,7 +15,7 @@ function setTable() {
     loadWords();
 
     const table = document.createElement('table');
-    editorMain.appendChild(table);
+    pageTable.appendChild(table);
     table.classList.add('main__table')
 
 
@@ -50,7 +51,7 @@ function setTable() {
 }
 
 // Перезагрузить таблицу редактирования слов (принцип DRY)
-function reloadTable(){
+function reloadTable() {
     let oldTable = document.querySelector('.main__table');
     oldTable.remove();
     setTable();
@@ -130,7 +131,7 @@ function menuWord(table) {
                             let newSavedWordTranslate = this.value;
 
                             words[newSavedWord] = newSavedWordTranslate;
-                            
+
                             reloadTable()
                         }
                     })
@@ -191,7 +192,7 @@ addWordButton.addEventListener('click', () => {
 
     inputEn.addEventListener('keypress', function setEngWord(e) {
         if (e.key === 'Enter') {
-            engWord = this.value; 
+            engWord = this.value;
             this.remove();
 
             getRuWord()
@@ -202,29 +203,29 @@ addWordButton.addEventListener('click', () => {
         let inputRu = document.createElement('input');
         inputRu.value = 'Перевод слова и enter';
         addWordButton.parentElement.prepend(inputRu);
-    
+
         let ruWord = '';
-    
+
         inputRu.addEventListener('click', () => {
             inputRu.value = '';
         })
-    
+
         inputRu.addEventListener('keypress', function setRuWord(e) {
             if (e.key === 'Enter') {
-                ruWord = this.value; 
+                ruWord = this.value;
                 this.remove();
-                
+
                 words[engWord] = ruWord;
-                
+
                 localStorage.setItem('words', JSON.stringify(words));
-                
+
 
                 reloadTable()
-                
+
             }
         });
     }
-    
+
 
 
 });
@@ -237,18 +238,39 @@ clearButton.addEventListener('click', () => {
 });
 
 switchLearned.addEventListener('change', function () {
+    wordLearnedList.textContent = '';
     if (this.checked) {
-        console.log('Включили')
+        switchNeedLearn.checked = false;
+
+        // 
+        let know = localStorage.getItem('know'); // Пытаемся получить данные из хранилища
+        let objKnow = JSON.parse(know);
+        console.log(objKnow);
+
+        let knowKeys = Object.keys(objKnow);
+        let knowValues = Object.values(objKnow);
+        
+
+        for(let i = 0; i < knowKeys.length; i++) {
+            wordLearnedList.textContent += knowKeys[i] + ' - ' + knowValues[i] + ' | ';
+        }
+
+
     } else {
-        console.log('Выключили')
+        wordLearnedList.textContent = '';
     }
 });
 
 
+// TODO
+// Осталось дописать функцию которая будет подставлять текст подобно той что выше
 switchNeedLearn.addEventListener('change', function () {
+    wordLearnedList.textContent = '';
     if (this.checked) {
+        switchLearned.checked = false;
         console.log('Включили')
     } else {
+        wordLearnedList.textContent = '';
         console.log('Выключили')
     }
 });
