@@ -47,10 +47,16 @@ function setTable() {
 
     }
     menuWord(table);
-    console.log(words);
 }
 
+// Перезагрузить таблицу редактирования слов (принцип DRY)
+function reloadTable(){
+    let oldTable = document.querySelector('.main__table');
+    oldTable.remove();
+    setTable();
+}
 
+// Действие со словом в таблице (редактировать / удалить)
 function menuWord(table) {
     const tds = table.querySelectorAll('td');
 
@@ -121,12 +127,11 @@ function menuWord(table) {
                         this.removeEventListener('keypress', saveNewWordTrans);
 
                         if (e.key === 'Enter') {
-                            console.log('Сработало')
                             let newSavedWordTranslate = this.value;
 
                             words[newSavedWord] = newSavedWordTranslate;
-                            table.remove();
-                            setTable();
+                            
+                            reloadTable()
                         }
                     })
 
@@ -135,7 +140,6 @@ function menuWord(table) {
                     // теперь при нажатии enter сохраняем новые свойства объекта
                     newInput.addEventListener('keypress', function saveNewWordTrans(e) {
                         if (e.key === 'Enter') {
-                            console.log('Сработало');
 
                             let newSavedWordTranslate = this.value.trim(); // Убираем лишние пробелы
                             if (!newSavedWordTranslate) return; // Проверяем, чтобы не было пустых значений
@@ -144,10 +148,7 @@ function menuWord(table) {
 
                             localStorage.setItem('words', JSON.stringify(words));
 
-                            setTimeout(() => {
-                                table.remove();
-                                setTable(); // Создаём новую таблицу уже с обновленными словами
-                            }, 0);
+                            reloadTable()
                         }
                     });
                 }
@@ -161,10 +162,7 @@ function menuWord(table) {
 
             localStorage.setItem('words', JSON.stringify(words));
 
-            setTimeout(() => {
-                table.remove();
-                setTable(); // Создаём новую таблицу уже с обновленными словами
-            }, 0);
+            reloadTable()
         }
 
 
@@ -176,48 +174,61 @@ function menuWord(table) {
 };
 
 
-// Доработать тут! НЕ РАБОТАЕТ НЕ РАБОТАЕТ
-// addWordButton.addEventListener('click', () => {
+// Добавление слова
+addWordButton.addEventListener('click', () => {
 
-//     let label = document.createElement('label');
-//     label.textContent = 'Введите слово на английском и нажмите Enter';
+    let inputEn = document.createElement('input');
+    inputEn.value = 'Слово на англ и enter';
+    addWordButton.parentElement.prepend(inputEn);
+
+
+
+    let engWord = '';
+
+    inputEn.addEventListener('click', () => {
+        inputEn.value = '';
+    })
+
+    inputEn.addEventListener('keypress', function setEngWord(e) {
+        if (e.key === 'Enter') {
+            engWord = this.value; 
+            this.remove();
+
+            getRuWord()
+        }
+    });
+
+    function getRuWord() {
+        let inputRu = document.createElement('input');
+        inputRu.value = 'Перевод слова и enter';
+        addWordButton.parentElement.prepend(inputRu);
     
-//     let engWord = '';
+        let ruWord = '';
+    
+        inputRu.addEventListener('click', () => {
+            inputRu.value = '';
+        })
+    
+        inputRu.addEventListener('keypress', function setRuWord(e) {
+            if (e.key === 'Enter') {
+                ruWord = this.value; 
+                this.remove();
+                
+                words[engWord] = ruWord;
+                
+                localStorage.setItem('words', JSON.stringify(words));
+                
 
-//     let inputEn = document.createElement('input');
-//     inputEn.addEventListener('keypress', function setEngWord(e) {
-//         if (e.key === 'Enter') {
-//             engWord = this.value; 
-//             this.remove();
-//         }
-//     });
-
-//     label.textContent = 'Введите слово на русском языке и нажмите Enter';
-//     let ruWord = '';
-
-//     let inputRu = document.createElement('input');
-//     inputRu.addEventListener('keypress', function setEngWord(e) {
-//         if (e.key === 'Enter') {
-//             ruWord = this.value; 
-//             this.remove();
-
-//             console.log(words);
-            
-//             words[engWord] = ruWord;
-
-//             console.log(words);
-
-//             localStorage.setItem('words', JSON.stringify(words));
+                reloadTable()
+                
+            }
+        });
+    }
+    
 
 
-//             setTimeout(() => {
-//                 label.textContent = 'Новое слово сохранено';
-//                 label.remove();
-//             }, 3000);
+});
 
-//         }
-//     });
-// });
 
 
 clearButton.addEventListener('click', () => {

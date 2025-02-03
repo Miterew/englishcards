@@ -39,35 +39,44 @@ let counter = 0;
 getNewCard();
 
 // Кнопка "ЗНАЮ"
-btnKnow.addEventListener('click', function setLearnWord() {
-    this.removeEventListener('click', setLearnWord);
 
-    let key = cardWord.textContent;
-    let currentValue = words[key];
+// if сделано чтоб на других страницах не было ошибки если элемент отсутствует
+if (btnKnow) {
+    btnKnow.addEventListener('click', function setLearnWord() {
+        this.removeEventListener('click', setLearnWord);
 
-    know[key] = currentValue;
+        let key = cardWord.textContent;
+        let currentValue = words[key];
 
-    delete words[key];
+        know[key] = currentValue;
 
-    counter--;
-    getNewCard()
-    this.addEventListener('click', setLearnWord);
-})
+        delete words[key];
+
+        counter--;
+        getNewCard()
+        this.addEventListener('click', setLearnWord);
+    })
+}
+
 
 // Кнопка "НЕ ЗНАЮ"
-btnNo.addEventListener('click', function getTimeLearn() {
-    this.removeEventListener('click', getTimeLearn);
 
-    let key = cardWord.textContent;
-    let currentValue = words[key];
-    cardWord.textContent += " | " + currentValue;;
+// if сделано чтоб на других страницах не было ошибки если элемент отсутствует
+if (btnNo) {
+    btnNo.addEventListener('click', function getTimeLearn() {
+        this.removeEventListener('click', getTimeLearn);
 
-    // даём время на изучение правильного ответа и врубаем некст
-    setTimeout(function () {
-        btnNo.addEventListener('click', getTimeLearn);
-        getNewCard();
-    }, 1000);
-})
+        let key = cardWord.textContent;
+        let currentValue = words[key];
+        cardWord.textContent += " | " + currentValue;;
+
+        // даём время на изучение правильного ответа и врубаем некст
+        setTimeout(function () {
+            btnNo.addEventListener('click', getTimeLearn);
+            getNewCard();
+        }, 1000);
+    });
+};
 
 
 
@@ -75,18 +84,19 @@ function getNewCard() {
     let keys = Object.keys(words);
 
     let key = keys[counter];
-    cardWord.textContent = key;
 
-    cardImage.textContent = '';
+    // сделано чтоб на других страницах не было ошибки если элемент отсутствует
+    if (cardWord) {
+        cardWord.textContent = key;
 
-    let image = document.createElement('img');
-    image.src = 'img/' + keys[counter] + '.png';
-    cardImage.appendChild(image);
+        cardImage.textContent = '';
 
-    setNextIndex(keys, counter);
+        let image = document.createElement('img');
+        image.src = 'img/' + keys[counter] + '.png';
+        cardImage.appendChild(image);
 
-    console.log('Вы знаете следующие слова:')
-    console.log(know)
+        setNextIndex(keys, counter);
+    }
 }
 
 function setNextIndex(arrKeys, index) {
