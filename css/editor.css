@@ -127,3 +127,18 @@ input:checked + .slider::before {
     left: 5px;
 }
 /* Конец ползунков */
+
+
+.page__words {
+    display: flex;
+    justify-content: center;
+}
+
+.words__show_list {
+
+}
+
+.words__show_list-enable {
+    padding: 30px;
+    border: 1px solid black;
+}

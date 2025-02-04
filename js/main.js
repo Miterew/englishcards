@@ -20,7 +20,6 @@ function loadWords() {
             baby: "малыш",
             birth: "рождение",
             boy: "мальчик",
-            test: "test"
         };
 
         localStorage.setItem('words', JSON.stringify(defaultWords));
@@ -30,8 +29,23 @@ function loadWords() {
 
 let words = loadWords();
 
-// Объект и известными словами
-const know = {};
+setLearnedWords();
+
+// Проверяем если существует объект с известными словами или создаем новый
+function setLearnedWords() {
+
+    let know = localStorage.getItem('know');
+
+    if(know) {
+        return JSON.parse(know);
+    } else {
+        let newKnow = {}; // Создаем объект
+        localStorage.setItem('know', JSON.stringify(newKnow)); // Сохраняем его в localStorage
+        return newKnow;
+    }
+    
+}
+
 
 
 let counter = 0;
@@ -48,8 +62,10 @@ if (btnKnow) {
         let key = cardWord.textContent;
         let currentValue = words[key];
 
+        let know = setLearnedWords(); // Загружаем известные слова
         know[key] = currentValue;
         localStorage.setItem('know', JSON.stringify(know));
+
 
         delete words[key];
         localStorage.setItem('words', JSON.stringify(words));
@@ -62,7 +78,6 @@ if (btnKnow) {
 
 
 // Кнопка "НЕ ЗНАЮ"
-
 // if сделано чтоб на других страницах не было ошибки если элемент отсутствует
 if (btnNo) {
     btnNo.addEventListener('click', function getTimeLearn() {
@@ -84,18 +99,23 @@ if (btnNo) {
 
 function getNewCard() {
     let keys = Object.keys(words);
+    
+    if (keys.length === 0) {
+        alert("Все слова изучены!");
+        return;
+    }
 
     let key = keys[counter];
 
-    // сделано чтоб на других страницах не было ошибки если элемент отсутствует
     if (cardWord) {
-        cardWord.textContent = key;
-
+        cardWord.textContent = key || "Слов нет";
         cardImage.textContent = '';
 
-        let image = document.createElement('img');
-        image.src = 'img/' + keys[counter] + '.png';
-        cardImage.appendChild(image);
+        if (key) {
+            let image = document.createElement('img');
+            image.src = 'img/' + key + '.png';
+            cardImage.appendChild(image);
+        }
 
         setNextIndex(keys, counter);
     }

@@ -6,12 +6,13 @@ const switchNeedLearn = document.getElementById('wordsSwitchNeedLearn');
 const clearButton = document.getElementById('clear');
 const divAddButton = document.querySelector('.editor__add_word');
 const addWordButton = document.getElementById('add_word');
-const wordLearnedList = document.querySelector('.words__show_list');
+const wordShowList = document.querySelector('.words__show_list');
+const wordPage = document.querySelector('.page__words');
 
 setTable();
 
+// Отрисовка таблицы
 function setTable() {
-
     loadWords();
 
     const table = document.createElement('table');
@@ -103,8 +104,15 @@ function menuWord(table) {
                 input.addEventListener('keypress', function (e) {
                     if (e.key === 'Enter') {
 
-                        let newSavedWord = this.value; // сохраняем ввёденый текст
-                        delete words[savedText];; // удаляем старое значение объекта
+                        let newSavedWord = this.value.trim(); // сохраняем ввёденый текст
+                        if (!newSavedWordTranslate) return; // эту защиту подсказал GPT
+
+                        if (words[newSavedWord]) {      // эту защиту подсказал GPT
+                            alert("Такое слово уже есть в списке!");
+                            return;
+                        }
+
+                        delete words[savedText]; // удаляем старое значение объекта
 
                         this.remove();
 
@@ -175,7 +183,7 @@ function menuWord(table) {
 };
 
 
-// Добавление слова
+// Кнопка добавление слова
 addWordButton.addEventListener('click', () => {
 
     let inputEn = document.createElement('input');
@@ -231,46 +239,78 @@ addWordButton.addEventListener('click', () => {
 });
 
 
-
+// Кнопка очистки локального хранилища
 clearButton.addEventListener('click', () => {
     localStorage.clear();
     location.reload();
+
 });
 
 switchLearned.addEventListener('change', function () {
-    wordLearnedList.textContent = '';
+    wordShowList.textContent = '';
     if (this.checked) {
         switchNeedLearn.checked = false;
 
-        // 
-        let know = localStorage.getItem('know'); // Пытаемся получить данные из хранилища
-        let objKnow = JSON.parse(know);
-        console.log(objKnow);
-
-        let knowKeys = Object.keys(objKnow);
-        let knowValues = Object.values(objKnow);
+        let oldKnow = localStorage.getItem('know'); // Пытаемся получить данные из хранилища
+        let objKnow = JSON.parse(oldKnow);
         
+        // если объект импортировался успешно
+        if (objKnow) {
+            let knowKeys = Object.keys(objKnow);
+            let knowValues = Object.values(objKnow);
 
-        for(let i = 0; i < knowKeys.length; i++) {
-            wordLearnedList.textContent += knowKeys[i] + ' - ' + knowValues[i] + ' | ';
+            localStorage.setItem('know', JSON.stringify(objKnow));
+
+            for (let i = 0; i < knowKeys.length; i++) {
+
+                wordShowList.textContent += knowKeys[i] + ' - ' + knowValues[i] + ' | ';
+                console.log(wordShowList.textContent)
+            }
+
         }
 
+        wordShowList.classList.add('words__show_list-enable');
+        // Выдаем "Пусто" если нет сохранных слов
+        if (!wordShowList.textContent) {
+            wordShowList.textContent = 'Пусто';
+        }
 
     } else {
-        wordLearnedList.textContent = '';
+        wordShowList.textContent = '';
+        wordShowList.classList.remove('words__show_list-enable');
+
     }
 });
 
 
-// TODO
 // Осталось дописать функцию которая будет подставлять текст подобно той что выше
+
 switchNeedLearn.addEventListener('change', function () {
-    wordLearnedList.textContent = '';
+    wordShowList.textContent = '';
+
     if (this.checked) {
         switchLearned.checked = false;
-        console.log('Включили')
+
+        let wordsStr = localStorage.getItem('words'); // Загружаем слова, которые нужно выучить
+        let wordsObj = JSON.parse(wordsStr);
+
+        if (wordsObj) {
+            let wordsKeys = Object.keys(wordsObj);
+            let wordsValues = Object.values(wordsObj);
+
+            for (let i = 0; i < wordsKeys.length; i++) {
+                wordShowList.textContent += wordsKeys[i] + ' - ' + wordsValues[i] + ' | ';
+            }
+        }
+
+        // Выдаем "Пусто", если нет слов для изучения
+        if (!wordShowList.textContent) {
+            wordShowList.textContent = 'Пусто';
+        }
+
+        wordShowList.classList.add('words__show_list-enable');
     } else {
-        wordLearnedList.textContent = '';
-        console.log('Выключили')
+        wordShowList.textContent = '';
+        wordShowList.classList.remove('words__show_list-enable');
     }
 });
